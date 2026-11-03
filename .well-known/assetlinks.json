@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.gaadibook.gaadibook_app",
+      "sha256_cert_fingerprints": [
+        "D7:39:51:A2:24:52:C0:8A:95:8D:52:FD:1E:BF:16:CD:E3:1B:6C:3C:30:1F:1A:41:52:2B:E3:03:DD:A3:49:17"
+      ]
+    }
+  }
+]

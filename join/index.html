@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>GaadiBook</title>
+<style>
+:root { color-scheme: light; font-family: system-ui, sans-serif; color: #0F172A; background: #F8FAFC; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+header { background: #FFFFFF; padding: 18px 24px; position: sticky; top: 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { color: #0F172A; text-decoration: none; font-size: 23px; font-weight: 750; letter-spacing: -.6px; }
+select { min-height: 56px; max-width: 48vw; padding: 8px; border: 1px solid #CBD5E1; border-radius: 12px; color: #0F172A; background: #FFFFFF; font: inherit; }
+main { max-width: 480px; margin: 0 auto; padding: 54px 24px 32px; }
+svg { width: 72px; height: 72px; color: #0F172A; }
+h1 { font-size: clamp(26px, 6vw, 34px); line-height: 1.3; letter-spacing: -.6px; margin: 24px 0 16px; }
+p { font-size: 18px; line-height: 1.65; margin: 0 0 28px; overflow-wrap: anywhere; }
+.open { display: flex; min-height: 64px; padding: 16px; align-items: center; justify-content: center; text-align: center; border-radius: 16px; background: #0F172A; color: white; font-weight: 650; font-size: 18px; text-decoration: none; }
+.open:focus-visible, select:focus-visible { outline: 3px solid #EA580C; outline-offset: 4px; }
+.help { margin-top: 32px; padding-top: 24px; border-top: 1px solid #CBD5E1; font-size: 16px; color: #334155; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header><a class="brand" href="/">GaadiBook</a><select id="language" aria-label="Language">
+<option value="en">English</option><option value="hi">हिन्दी</option><option value="ml">മലയാളം</option><option value="ta">தமிழ்</option><option value="te">తెలుగు</option><option value="kn">ಕನ್ನಡ</option><option value="mr">मराठी</option><option value="bn">বাংলা</option><option value="gu">ગુજરાતી</option><option value="pa">ਪੰਜਾਬੀ</option>
+</select></header>
+<main>
+<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 28 32 10l24 18v28H8V28Z"/><path d="M24 56V37h16v19M23 25h18"/></svg>
+<h1 id="title"></h1><p id="body"></p><a id="open" class="open" hidden></a><p id="help" class="help"></p>
+</main>
+<script>
+'use strict';
+const translations = {"en": ["Join your workshop", "Open GaadiBook to send your join request. The owner must approve it before you can access the workshop.", "Open GaadiBook", "No app yet? Ask the owner for GaadiBook, install it, then tap this invitation again.", "This invitation link is incomplete. Ask the owner for a new link.", "Language"], "hi": ["अपने वर्कशॉप से जुड़ें", "जुड़ने का अनुरोध भेजने के लिए GaadiBook खोलें। वर्कशॉप में प्रवेश से पहले मालिक की मंज़ूरी ज़रूरी है।", "GaadiBook खोलें", "ऐप नहीं है? मालिक से GaadiBook लें, इंस्टॉल करें और फिर इस आमंत्रण पर टैप करें।", "यह आमंत्रण लिंक अधूरा है। मालिक से नया लिंक माँगें।", "भाषा"], "ml": ["നിങ്ങളുടെ വർക്ക്ഷോപ്പിൽ ചേരുക", "ചേരാനുള്ള അഭ്യർത്ഥന അയയ്ക്കാൻ GaadiBook തുറക്കുക. വർക്ക്ഷോപ്പിൽ പ്രവേശിക്കാൻ ഉടമയുടെ അനുമതി വേണം.", "GaadiBook തുറക്കുക", "ആപ്പ് ഇല്ലേ? ഉടമയിൽ നിന്ന് GaadiBook വാങ്ങി ഇൻസ്റ്റാൾ ചെയ്ത ശേഷം ഈ ക്ഷണ ലിങ്കിൽ വീണ്ടും തൊടുക.", "ഈ ക്ഷണ ലിങ്ക് അപൂർണ്ണമാണ്. ഉടമയോട് പുതിയ ലിങ്ക് ചോദിക്കുക.", "ഭാഷ"], "ta": ["உங்கள் பணிமனையில் சேரவும்", "சேர்வதற்கான கோரிக்கையை அனுப்ப GaadiBook-ஐத் திறக்கவும். பணிமனையை அணுக உரிமையாளரின் ஒப்புதல் தேவை.", "GaadiBook-ஐத் திறக்கவும்", "செயலி இல்லையா? உரிமையாளரிடம் GaadiBook பெற்று நிறுவிய பின் இந்த அழைப்பை மீண்டும் தொடவும்.", "இந்த அழைப்பு இணைப்பு முழுமையாக இல்லை. உரிமையாளரிடம் புதிய இணைப்பைக் கேட்கவும்.", "மொழி"], "te": ["మీ వర్క్‌షాప్‌లో చేరండి", "చేరడానికి అభ్యర్థన పంపేందుకు GaadiBook తెరవండి. వర్క్‌షాప్‌లోకి ప్రవేశించడానికి యజమాని ఆమోదం అవసరం.", "GaadiBook తెరవండి", "యాప్ లేదా? యజమాని నుంచి GaadiBook తీసుకుని ఇన్‌స్టాల్ చేసి, ఈ ఆహ్వానాన్ని మళ్లీ నొక్కండి.", "ఈ ఆహ్వాన లింక్ అసంపూర్ణంగా ఉంది. యజమానిని కొత్త లింక్ అడగండి.", "భాష"], "kn": ["ನಿಮ್ಮ ವರ್ಕ್‌ಶಾಪ್‌ಗೆ ಸೇರಿ", "ಸೇರುವ ವಿನಂತಿ ಕಳುಹಿಸಲು GaadiBook ತೆರೆಯಿರಿ. ವರ್ಕ್‌ಶಾಪ್ ಪ್ರವೇಶಿಸಲು ಮಾಲೀಕರ ಒಪ್ಪಿಗೆ ಅಗತ್ಯ.", "GaadiBook ತೆರೆಯಿರಿ", "ಆ್ಯಪ್ ಇಲ್ಲವೇ? ಮಾಲೀಕರಿಂದ GaadiBook ಪಡೆದು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ, ನಂತರ ಈ ಆಹ್ವಾನವನ್ನು ಮತ್ತೆ ಒತ್ತಿ.", "ಈ ಆಹ್ವಾನ ಲಿಂಕ್ ಅಪೂರ್ಣವಾಗಿದೆ. ಮಾಲೀಕರನ್ನು ಹೊಸ ಲಿಂಕ್ ಕೇಳಿ.", "ಭಾಷೆ"], "mr": ["तुमच्या वर्कशॉपमध्ये सामील व्हा", "सामील होण्याची विनंती पाठवण्यासाठी GaadiBook उघडा. वर्कशॉपमध्ये प्रवेशासाठी मालकाची मंजुरी आवश्यक आहे.", "GaadiBook उघडा", "ॲप नाही? मालकाकडून GaadiBook घ्या, इन्स्टॉल करा आणि हे आमंत्रण पुन्हा उघडा.", "ही आमंत्रण लिंक अपूर्ण आहे. मालकाकडे नवीन लिंक मागा.", "भाषा"], "bn": ["আপনার ওয়ার্কশপে যোগ দিন", "যোগ দেওয়ার অনুরোধ পাঠাতে GaadiBook খুলুন। ওয়ার্কশপে প্রবেশের আগে মালিকের অনুমোদন প্রয়োজন।", "GaadiBook খুলুন", "অ্যাপ নেই? মালিকের কাছ থেকে GaadiBook নিয়ে ইনস্টল করুন, তারপর এই আমন্ত্রণে আবার চাপুন।", "এই আমন্ত্রণের লিংকটি অসম্পূর্ণ। মালিকের কাছে নতুন লিংক চান।", "ভাষা"], "gu": ["તમારા વર્કશોપમાં જોડાઓ", "જોડાવાની વિનંતી મોકલવા GaadiBook ખોલો. વર્કશોપમાં પ્રવેશવા માટે માલિકની મંજૂરી જરૂરી છે.", "GaadiBook ખોલો", "ઍપ નથી? માલિક પાસેથી GaadiBook મેળવો, ઇન્સ્ટોલ કરો અને આ આમંત્રણ પર ફરી ટૅપ કરો.", "આ આમંત્રણ લિંક અધૂરી છે. માલિક પાસે નવી લિંક માગો.", "ભાષા"], "pa": ["ਆਪਣੀ ਵਰਕਸ਼ਾਪ ਨਾਲ ਜੁੜੋ", "ਜੁੜਨ ਦੀ ਬੇਨਤੀ ਭੇਜਣ ਲਈ GaadiBook ਖੋਲ੍ਹੋ। ਵਰਕਸ਼ਾਪ ਵਿੱਚ ਦਾਖ਼ਲ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਮਾਲਕ ਦੀ ਮਨਜ਼ੂਰੀ ਜ਼ਰੂਰੀ ਹੈ।", "GaadiBook ਖੋਲ੍ਹੋ", "ਐਪ ਨਹੀਂ ਹੈ? ਮਾਲਕ ਤੋਂ GaadiBook ਲਓ, ਇੰਸਟਾਲ ਕਰੋ ਅਤੇ ਫਿਰ ਇਸ ਸੱਦੇ ਤੇ ਟੈਪ ਕਰੋ।", "ਇਹ ਸੱਦਾ ਲਿੰਕ ਅਧੂਰਾ ਹੈ। ਮਾਲਕ ਤੋਂ ਨਵਾਂ ਲਿੰਕ ਮੰਗੋ।", "ਭਾਸ਼ਾ"]};
+const language = document.getElementById('language');
+const params = new URLSearchParams(location.search);
+const preferred = params.get('lang') || navigator.language.split('-')[0];
+language.value = translations[preferred] ? preferred : 'en';
+let code = '';
+try { code = decodeURIComponent(location.hash.slice(1)).toUpperCase(); } catch (_) {}
+const valid = /^[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{8}$/.test(code);
+function render() {
+  const lang = language.value;
+  const t = translations[lang];
+  document.documentElement.lang = lang;
+  document.getElementById('title').textContent = t[0];
+  document.getElementById('body').textContent = valid ? t[1] : t[4];
+  document.getElementById('help').textContent = t[3];
+  language.setAttribute('aria-label', t[5]);
+  const button = document.getElementById('open');
+  button.textContent = t[2];
+  button.hidden = !valid;
+  if (valid) {
+    const app = 'gaadibook://invite?code=' + encodeURIComponent(code);
+    const fallback = 'https://gaadibook.github.io/join/?lang=' + lang + '&missing=1#' + code;
+    button.href = /Android/i.test(navigator.userAgent)
+      ? 'intent://invite?code=' + code + '#Intent;scheme=gaadibook;package=com.gaadibook.gaadibook_app;S.browser_fallback_url=' + encodeURIComponent(fallback) + ';end'
+      : app;
+  }
+}
+language.addEventListener('change', render);
+render();
+</script>
+</body>
+</html>
