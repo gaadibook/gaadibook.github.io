@@ -11,7 +11,9 @@
   <meta property="og:description" content="Job cards, bills, UPI payments, stock, staff and the daily cashbook for two-wheeler workshops. In 10 Indian languages.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://gaadibook.github.io/">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FA5A1E'/%3E%3Cstop offset='1' stop-color='%23DD450D'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='900' font-size='26' fill='white' text-anchor='middle'%3EGB%3C/text%3E%3C/svg%3E">
+  <meta property="og:image" content="https://gaadibook.github.io/img/logo-512.jpg">
+  <link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -62,9 +64,7 @@
     .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; color: var(--navy); letter-spacing: -.3px; }
     .brand:hover { text-decoration: none; }
     .logo {
-      width: 36px; height: 36px; border-radius: 11px; flex: none;
-      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
-      color: #fff; display: grid; place-items: center; font-weight: 900; font-size: 14px;
+      width: 36px; height: 36px; border-radius: 10px; flex: none; display: block;
       box-shadow: 0 6px 14px -4px rgba(250, 90, 30, .55);
     }
     .nav { display: flex; align-items: center; gap: 4px; }
@@ -314,7 +314,7 @@
 
   <header class="top" id="top">
     <div class="wrap bar">
-      <a class="brand" href="./" aria-label="GaadiBook home"><span class="logo">GB</span>GaadiBook</a>
+      <a class="brand" href="./" aria-label="GaadiBook home"><img class="logo" src="img/logo-128.png" alt="" width="36" height="36">GaadiBook</a>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
@@ -655,7 +655,7 @@
     <div class="wrap">
       <div class="foot">
         <div>
-          <a class="brand" href="./"><span class="logo">GB</span>GaadiBook</a>
+          <a class="brand" href="./"><img class="logo" src="img/logo-128.png" alt="" width="36" height="36">GaadiBook</a>
           <p>The simple workshop app for two-wheeler service centres in India. Job cards, bills, stock, staff and cashbook in your own language.</p>
         </div>
         <div>
