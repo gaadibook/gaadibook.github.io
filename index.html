@@ -4,192 +4,706 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="fast2sms" content="xK2LXxn64o1UAjT5rymBAO7XAuXPjA6t">
-  <title>GaadiBook — Two-Wheeler Workshop App</title>
-  <meta name="description" content="GaadiBook is a mobile app for two-wheeler service workshops in India: job cards, bills, payments, stock, staff and cashbook in 10 Indian languages.">
-  <!-- Published to GitHub Pages together with privacy.html (a copy of docs/privacy_and_deletion.html) and terms.html. -->
+  <title>GaadiBook — Workshop app for two-wheeler service centres</title>
+  <meta name="description" content="GaadiBook is a mobile app for two-wheeler service workshops in India: job cards, bills, payments, stock, staff and cashbook in 10 Indian languages. 30-day free trial.">
+  <meta name="theme-color" content="#0F172A">
+  <meta property="og:title" content="GaadiBook — Run your workshop from your phone">
+  <meta property="og:description" content="Job cards, bills, UPI payments, stock, staff and the daily cashbook for two-wheeler workshops. In 10 Indian languages.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gaadibook.github.io/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FA5A1E'/%3E%3Cstop offset='1' stop-color='%23DD450D'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='900' font-size='26' fill='white' text-anchor='middle'%3EGB%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Published to GitHub Pages together with privacy.html, terms.html and refund.html. No raster images: SVG and CSS only. -->
   <style>
     :root {
       --brand: #FA5A1E;
       --brand-dark: #DD450D;
+      --brand-soft: #FFF1EA;
       --navy: #0F172A;
+      --navy-2: #1E293B;
       --slate: #64748B;
       --text: #334155;
-      --bg: #F8FAFC;
-      --card: #FFFFFF;
+      --bg: #FFFFFF;
+      --bg-2: #F8FAFC;
       --border: #E2E8F0;
+      --green: #059669;
+      --green-soft: #ECFDF5;
+      --radius: 20px;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06);
+      --shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 12px 32px -12px rgba(15, 23, 42, .14);
+      --shadow-lg: 0 30px 60px -20px rgba(15, 23, 42, .35);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--navy);
-      line-height: 1.6;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--navy); line-height: 1.6; font-size: 16px;
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
     }
-    a { color: var(--brand-dark); }
-    .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
-    header { background: var(--card); border-bottom: 1px solid var(--border); }
-    header .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; text-decoration: none; color: var(--navy); }
+    a { color: var(--brand-dark); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    :focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; border-radius: 8px; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+    section[id] { scroll-margin-top: 84px; }
+    .skip { position: absolute; left: -999px; top: 8px; background: var(--navy); color: #fff; padding: 10px 16px; border-radius: 10px; z-index: 100; }
+    .skip:focus { left: 8px; }
+
+    /* Header */
+    header.top {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255, 255, 255, .82); backdrop-filter: saturate(180%) blur(14px); -webkit-backdrop-filter: saturate(180%) blur(14px);
+      border-bottom: 1px solid transparent; transition: border-color .2s, box-shadow .2s;
+    }
+    header.top.scrolled { border-bottom-color: var(--border); box-shadow: var(--shadow-sm); }
+    .bar { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; color: var(--navy); letter-spacing: -.3px; }
+    .brand:hover { text-decoration: none; }
     .logo {
-      width: 36px; height: 36px; border-radius: 10px;
+      width: 36px; height: 36px; border-radius: 11px; flex: none;
       background: linear-gradient(135deg, var(--brand), var(--brand-dark));
-      color: #fff; display: grid; place-items: center; font-weight: 900; font-size: 15px;
+      color: #fff; display: grid; place-items: center; font-weight: 900; font-size: 14px;
+      box-shadow: 0 6px 14px -4px rgba(250, 90, 30, .55);
     }
-    nav a { color: var(--slate); text-decoration: none; font-weight: 600; font-size: 14px; margin-left: 16px; }
-    .hero { padding: 64px 0 48px; text-align: center; }
-    .hero h1 { font-size: clamp(28px, 6vw, 44px); line-height: 1.15; letter-spacing: -0.5px; }
-    .hero h1 span { color: var(--brand); }
-    .hero p { color: var(--text); font-size: 17px; max-width: 620px; margin: 16px auto 0; }
-    .pill {
-      display: inline-block; margin-top: 24px; padding: 10px 20px; border-radius: 999px;
-      background: var(--navy); color: #fff; font-weight: 700; font-size: 14px;
+    .nav { display: flex; align-items: center; gap: 4px; }
+    .nav a { color: var(--text); font-weight: 500; font-size: 15px; padding: 8px 12px; border-radius: 10px; }
+    .nav a:hover { background: var(--bg-2); color: var(--navy); text-decoration: none; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 48px; padding: 12px 22px; border-radius: 14px; font-weight: 600; font-size: 15.5px;
+      border: 1px solid transparent; cursor: pointer; transition: transform .15s, box-shadow .15s, background .15s;
     }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; padding-bottom: 48px; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 22px; }
-    .card h3 { font-size: 16px; margin-bottom: 6px; }
-    .card p { color: var(--text); font-size: 14.5px; }
-    .icon { width: 28px; height: 28px; color: var(--brand); margin-bottom: 10px; }
-    section h2 { font-size: 22px; margin-bottom: 16px; }
-    .about { padding-bottom: 48px; }
-    .about p { color: var(--text); margin-bottom: 12px; }
-    .howto { padding-bottom: 48px; }
-    .howto > p { color: var(--text); margin-bottom: 20px; }
-    .phones { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-    .step { text-align: center; max-width: 250px; }
-    .step h3 { font-size: 15px; margin-top: 12px; }
-    .step p { color: var(--slate); font-size: 13.5px; }
-    .phone {
-      width: 230px; background: var(--card); border: 8px solid var(--navy); border-radius: 30px;
-      padding: 22px 16px; text-align: left; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+    .btn-primary { background: var(--brand); color: #fff; box-shadow: 0 10px 24px -10px rgba(250, 90, 30, .8); }
+    .btn-primary:hover { background: var(--brand-dark); }
+    .btn-dark { background: var(--navy); color: #fff; }
+    .btn-dark:hover { background: var(--navy-2); }
+    .btn-ghost { background: #fff; color: var(--navy); border-color: var(--border); }
+    .btn-ghost:hover { border-color: #CBD5E1; }
+    .nav .btn { margin-left: 8px; min-height: 42px; padding: 9px 18px; color: #fff; }
+    .nav .btn:hover { background: var(--navy-2); }
+    .menu-btn { display: none; width: 48px; height: 48px; border-radius: 12px; border: 1px solid var(--border); background: #fff; color: var(--navy); cursor: pointer; place-items: center; }
+    @media (max-width: 860px) {
+      .menu-btn { display: grid; }
+      .nav {
+        position: absolute; left: 0; right: 0; top: 68px; flex-direction: column; align-items: stretch; gap: 2px;
+        background: #fff; border-bottom: 1px solid var(--border); padding: 12px 20px 20px; box-shadow: var(--shadow);
+        display: none;
+      }
+      .nav.open { display: flex; }
+      .nav a { padding: 14px 12px; font-size: 16px; }
+      .nav .btn { margin: 8px 0 0; min-height: 52px; }
     }
-    .phone .t { font-weight: 800; font-size: 15px; margin-bottom: 14px; }
-    .phone label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; }
-    .field {
-      border: 2px solid var(--border); border-radius: 12px; padding: 12px; font-size: 15px;
-      font-weight: 700; margin-bottom: 14px; color: var(--navy);
+
+    /* Hero */
+    .hero { position: relative; padding: 72px 0 88px; overflow: hidden; }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; z-index: -2;
+      background:
+        radial-gradient(60% 50% at 85% 10%, rgba(250, 90, 30, .14), transparent 70%),
+        radial-gradient(50% 40% at 0% 30%, rgba(59, 130, 246, .08), transparent 70%),
+        linear-gradient(180deg, #FFFFFF, var(--bg-2));
     }
-    .field.code { border-color: var(--brand); text-align: center; letter-spacing: 2px; }
-    .ok { background: #ECFDF5; color: #047857; border-radius: 10px; padding: 8px 10px; font-size: 12px; font-weight: 600; margin-bottom: 14px; }
-    .btn2 { background: var(--brand); color: #fff; border-radius: 12px; padding: 13px; text-align: center; font-weight: 700; font-size: 14px; }
-    .gbtn {
-      display: flex; align-items: center; justify-content: center; gap: 8px; border: 2px solid var(--border);
-      border-radius: 12px; padding: 12px; font-weight: 700; font-size: 14px; color: var(--navy);
+    .hero::after {
+      content: ""; position: absolute; inset: 0; z-index: -1; opacity: .5;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px;
+      -webkit-mask-image: radial-gradient(70% 60% at 50% 30%, #000, transparent 75%); mask-image: radial-gradient(70% 60% at 50% 30%, #000, transparent 75%);
     }
-    .gbtn b { color: #4285F4; font-size: 17px; }
-    .qr { width: 120px; height: 120px; margin: 4px auto 14px; color: var(--navy); display: block; }
-    @media (max-width: 520px) {
-      header .wrap { height: auto; padding-top: 12px; padding-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-      nav a { margin: 0 16px 0 0; }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 8px; border-radius: 999px;
+      background: #fff; border: 1px solid var(--border); font-size: 13.5px; font-weight: 600; color: var(--text); box-shadow: var(--shadow-sm);
     }
-    footer { border-top: 1px solid var(--border); background: var(--card); padding: 24px 0; font-size: 13.5px; color: var(--slate); }
-    footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+    .eyebrow .dot { width: 22px; height: 22px; border-radius: 999px; background: var(--green-soft); display: grid; place-items: center; }
+    .eyebrow .dot i { width: 8px; height: 8px; border-radius: 999px; background: var(--green); box-shadow: 0 0 0 4px rgba(5, 150, 105, .18); animation: pulse 2s infinite; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 7px rgba(5, 150, 105, 0); } }
+    .hero h1 { font-size: clamp(36px, 5.6vw, 60px); line-height: 1.06; letter-spacing: -1.8px; font-weight: 800; margin: 22px 0 18px; }
+    .hero h1 .grad { background: linear-gradient(90deg, var(--brand), #F59E0B); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero .lead { font-size: 18.5px; color: var(--text); max-width: 560px; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .ticks { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 26px; color: var(--text); font-size: 14.5px; font-weight: 500; }
+    .ticks span { display: inline-flex; align-items: center; gap: 8px; }
+    .ticks svg { color: var(--green); flex: none; }
+
+    /* Phone mockup */
+    .device-stage { position: relative; display: grid; place-items: center; }
+    .device-stage .glow { position: absolute; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, rgba(250, 90, 30, .28), transparent 65%); filter: blur(10px); z-index: 0; }
+    .device {
+      position: relative; z-index: 1; width: 300px; border-radius: 44px; padding: 12px; background: var(--navy);
+      box-shadow: var(--shadow-lg), inset 0 0 0 2px #334155; transform: rotate(-2deg);
+    }
+    .screen { background: var(--bg-2); border-radius: 34px; overflow: hidden; padding: 0 0 16px; }
+    .notch { width: 96px; height: 24px; background: var(--navy); border-radius: 0 0 16px 16px; margin: 0 auto 6px; }
+    .app-head { padding: 6px 18px 12px; display: flex; justify-content: space-between; align-items: center; }
+    .app-head b { font-size: 15px; }
+    .app-head small { display: block; color: var(--slate); font-size: 11.5px; font-weight: 500; }
+    .avatar { width: 32px; height: 32px; border-radius: 10px; background: var(--brand-soft); color: var(--brand-dark); display: grid; place-items: center; font-weight: 800; font-size: 12px; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 14px; }
+    .stat { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 12px; }
+    .stat small { color: var(--slate); font-size: 11px; font-weight: 600; display: block; }
+    .stat b { font-size: 19px; letter-spacing: -.4px; }
+    .stat .up { color: var(--green); }
+    .stat .down { color: #DC2626; }
+    .new-job { margin: 12px 14px; background: var(--brand); color: #fff; border-radius: 14px; padding: 13px; text-align: center; font-weight: 700; font-size: 14px; }
+    .list-title { padding: 2px 18px 8px; font-size: 12px; font-weight: 700; color: var(--slate); letter-spacing: .3px; }
+    .job { margin: 0 14px 8px; background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .job b { font-size: 13px; display: block; letter-spacing: .3px; }
+    .job small { color: var(--slate); font-size: 11.5px; }
+    .tag { font-size: 10.5px; font-weight: 700; padding: 4px 8px; border-radius: 999px; white-space: nowrap; }
+    .tag.g { background: var(--green-soft); color: var(--green); }
+    .tag.o { background: var(--brand-soft); color: var(--brand-dark); }
+    .tag.b { background: #EFF6FF; color: #1D4ED8; }
+    .float {
+      position: absolute; z-index: 2; background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 10px 14px;
+      box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600;
+      animation: bob 6s ease-in-out infinite;
+    }
+    .float small { display: block; color: var(--slate); font-weight: 500; font-size: 11.5px; }
+    .float .ic { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+    .float.f1 { left: -34px; bottom: -14px; }
+    .float.f2 { right: -40px; top: 22px; animation-delay: -3s; }
+    @keyframes bob { 50% { transform: translateY(-8px); } }
+
+    /* Languages strip */
+    .langs { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: #fff; padding: 22px 0; }
+    .langs .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px; }
+    .langs p { font-size: 13.5px; font-weight: 600; color: var(--slate); margin-right: 6px; }
+    .chip { padding: 6px 14px; border-radius: 999px; background: var(--bg-2); border: 1px solid var(--border); font-weight: 600; font-size: 14.5px; color: var(--navy-2); }
+
+    /* Sections */
+    .section { padding: 96px 0; }
+    .section.alt { background: var(--bg-2); }
+    .head { text-align: center; max-width: 680px; margin: 0 auto 52px; }
+    .kicker { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 12px; }
+    .head h2 { font-size: clamp(28px, 4vw, 40px); line-height: 1.15; letter-spacing: -1px; font-weight: 800; }
+    .head p { color: var(--text); font-size: 17.5px; margin-top: 14px; }
+
+    /* Features bento */
+    .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .feat {
+      background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 28px;
+      transition: transform .2s, box-shadow .2s, border-color .2s; position: relative; overflow: hidden;
+    }
+    .feat:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: #CBD5E1; }
+    .feat .ic { width: 48px; height: 48px; border-radius: 14px; background: var(--brand-soft); color: var(--brand-dark); display: grid; place-items: center; margin-bottom: 18px; }
+    .feat h3 { font-size: 18px; letter-spacing: -.3px; margin-bottom: 8px; }
+    .feat p { color: var(--text); font-size: 15.5px; }
+    .feat.wide { grid-column: span 2; background: linear-gradient(135deg, var(--navy), #1E293B); border-color: var(--navy); color: #fff; }
+    .feat.wide p { color: #CBD5E1; }
+    .feat.wide .ic { background: rgba(250, 90, 30, .18); color: #FDBA74; }
+    .feat.wide .mini { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .feat.wide .mini span { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .14); color: #E2E8F0; }
+
+    /* Steps */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .step { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; }
+    .step .num { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--navy); color: #fff; font-weight: 800; font-size: 14px; margin-bottom: 14px; }
+    .step h3 { font-size: 17.5px; margin-bottom: 6px; letter-spacing: -.2px; }
+    .step p { color: var(--text); font-size: 15px; }
+    .mock { background: var(--bg-2); border: 1px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 20px; min-height: 196px; display: flex; flex-direction: column; justify-content: center; }
+    .mock .t { font-weight: 700; font-size: 14.5px; margin-bottom: 12px; }
+    .mock label { display: block; font-size: 12px; font-weight: 600; color: var(--slate); margin-bottom: 4px; }
+    .field { background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 9px 12px; font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+    .gbtn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px; font-weight: 600; font-size: 14.5px; }
+    .mbtn { background: var(--brand); color: #fff; border-radius: 12px; padding: 10px; text-align: center; font-weight: 700; font-size: 14px; }
+    .qr { width: 104px; height: 104px; margin: 0 auto 12px; display: block; color: var(--navy); }
+    .ok { background: var(--green-soft); color: var(--green); border-radius: 10px; padding: 8px 10px; font-size: 13px; font-weight: 600; text-align: center; }
+
+    /* Trust */
+    .trust { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .trust div { padding: 6px 4px; }
+    .trust .ic { color: var(--brand-dark); margin-bottom: 12px; }
+    .trust h3 { font-size: 16.5px; margin-bottom: 6px; }
+    .trust p { color: var(--text); font-size: 15px; }
+
+    /* Pricing */
+    .trial {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+      background: linear-gradient(135deg, var(--brand-soft), #FFF7ED); border: 1px solid #FED7C3; border-radius: var(--radius);
+      padding: 22px 26px; margin-bottom: 22px;
+    }
+    .trial b { font-size: 18px; letter-spacing: -.3px; }
+    .trial p { color: var(--text); font-size: 15px; }
+    .plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .plan { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 22px; display: flex; flex-direction: column; transition: box-shadow .2s, transform .2s; }
+    .plan:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+    .plan h3 { font-size: 16px; font-weight: 700; }
+    .plan .who { color: var(--slate); font-size: 14px; font-weight: 500; }
+    .plan .amt { font-size: 40px; font-weight: 800; letter-spacing: -1.5px; margin: 18px 0 2px; line-height: 1; }
+    .plan .amt span { font-size: 15px; font-weight: 600; color: var(--slate); letter-spacing: 0; }
+    .plan .tax { color: var(--slate); font-size: 13px; margin-bottom: 18px; }
+    .plan .people { margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding-top: 16px; border-top: 1px dashed var(--border); }
+    .plan .people svg { color: var(--brand-dark); }
+    .included { margin-top: 22px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; }
+    .included h3 { font-size: 16.5px; margin-bottom: 16px; }
+    .checks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 24px; list-style: none; }
+    .checks li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; color: var(--text); }
+    .checks svg { color: var(--green); flex: none; margin-top: 3px; }
+    .fine { text-align: center; color: var(--slate); font-size: 14.5px; margin-top: 22px; }
+
+    /* FAQ */
+    .faq { max-width: 800px; margin: 0 auto; display: grid; gap: 12px; }
+    .faq details { background: #fff; border: 1px solid var(--border); border-radius: 16px; transition: box-shadow .2s; }
+    .faq details[open] { box-shadow: var(--shadow); }
+    .faq summary { list-style: none; cursor: pointer; padding: 20px 22px; font-weight: 600; font-size: 16.5px; display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 56px; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary .pm { width: 28px; height: 28px; flex: none; border-radius: 8px; background: var(--bg-2); display: grid; place-items: center; transition: transform .2s; }
+    .faq details[open] .pm { transform: rotate(45deg); background: var(--brand-soft); color: var(--brand-dark); }
+    .faq .ans { padding: 0 22px 20px; color: var(--text); font-size: 15.5px; }
+
+    /* Contact / CTA */
+    .cta-band {
+      position: relative; overflow: hidden; border-radius: 28px; padding: 56px 48px; color: #fff;
+      background: radial-gradient(60% 80% at 100% 0%, rgba(250, 90, 30, .45), transparent 60%), linear-gradient(135deg, var(--navy), #1E293B);
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center;
+    }
+    .cta-band h2 { font-size: clamp(26px, 3.6vw, 36px); line-height: 1.15; letter-spacing: -.8px; }
+    .cta-band p { color: #CBD5E1; margin-top: 12px; font-size: 16.5px; }
+    .contact-card { background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .14); border-radius: 20px; padding: 24px; display: grid; gap: 16px; }
+    .contact-card .row { display: flex; gap: 12px; align-items: flex-start; }
+    .contact-card .row svg { color: #FDBA74; flex: none; margin-top: 2px; }
+    .contact-card small { display: block; color: #94A3B8; font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; }
+    .contact-card a, .contact-card span { color: #fff; font-weight: 500; font-size: 15.5px; word-break: break-word; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 56px 0 32px; background: #fff; }
+    .foot { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 32px; }
+    .foot p { color: var(--slate); font-size: 14.5px; margin-top: 12px; max-width: 340px; }
+    .foot h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--slate); margin-bottom: 14px; }
+    .foot ul { list-style: none; display: grid; gap: 10px; }
+    .foot ul a { color: var(--text); font-size: 15px; font-weight: 500; }
+    .copy { margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: var(--slate); font-size: 13.5px; }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .no-js .reveal { opacity: 1; transform: none; }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+      .hero { padding-top: 48px; }
+      .hero .copy-col { text-align: center; }
+      .hero .lead { margin: 0 auto; }
+      .cta-row, .ticks { justify-content: center; }
+      .bento { grid-template-columns: 1fr 1fr; }
+      .plans { grid-template-columns: 1fr 1fr; }
+      .trust { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .checks { grid-template-columns: 1fr 1fr; }
+      .cta-band { grid-template-columns: 1fr; padding: 40px 28px; }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding: 0 16px; }
+      .section { padding: 72px 0; }
+      .bento, .steps, .plans, .trust, .checks, .foot { grid-template-columns: 1fr; }
+      .feat.wide { grid-column: auto; }
+      .device { width: 272px; }
+      .float.f1 { left: 0; bottom: -18px; }
+      .float.f2 { right: 0; top: -30px; }
+      .cta-row .btn { width: 100%; }
+      .trial { padding: 20px; }
+      .cta-band { padding: 32px 20px; border-radius: 22px; }
+    }
   </style>
 </head>
-<body>
-  <header>
-    <div class="wrap">
-      <a class="brand" href="./"><span class="logo">GB</span>GaadiBook</a>
-      <nav><a href="#how-it-works">How it works</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="#contact">Contact</a></nav>
+<body class="no-js">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="top" id="top">
+    <div class="wrap bar">
+      <a class="brand" href="./" aria-label="GaadiBook home"><span class="logo">GB</span>GaadiBook</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <nav class="nav" id="nav" aria-label="Main">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+        <a class="btn btn-dark" href="#pricing">Start free trial</a>
+      </nav>
     </div>
   </header>
 
-  <main>
+  <main id="main">
+    <!-- Hero -->
     <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="copy-col">
+          <span class="eyebrow"><span class="dot"><i></i></span>Now in testing on Google Play</span>
+          <h1>Run your two-wheeler workshop <span class="grad">from your phone</span></h1>
+          <p class="lead">GaadiBook is a simple Android app for bike and scooter service workshops in India. Job cards, bills, payments, stock, staff and the daily cashbook in one place, in your own language.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#pricing">Start 30-day free trial
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn-ghost" href="#how-it-works">See how it works</a>
+          </div>
+          <div class="ticks">
+            <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>No card needed for the trial</span>
+            <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>10 Indian languages</span>
+            <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Cancel anytime</span>
+          </div>
+        </div>
+
+        <div class="device-stage" aria-hidden="true">
+          <div class="glow"></div>
+          <div class="device">
+            <div class="screen">
+              <div class="notch"></div>
+              <div class="app-head">
+                <div><b>Ravi Auto Works</b><small>Wednesday, today</small></div>
+                <div class="avatar">RK</div>
+              </div>
+              <div class="stats">
+                <div class="stat"><small>Today's Collection</small><b class="up">&#8377;8,450</b></div>
+                <div class="stat"><small>Today's Expense</small><b class="down">&#8377;1,200</b></div>
+              </div>
+              <div class="new-job">+ New job card</div>
+              <div class="list-title">TODAY'S JOBS</div>
+              <div class="job"><div><b>KL 04 AB 1234</b><small>Activa 6G &middot; General service</small></div><span class="tag g">Ready</span></div>
+              <div class="job"><div><b>KL 07 CD 5678</b><small>Splendor+ &middot; Brake work</small></div><span class="tag o">In work</span></div>
+              <div class="job"><div><b>KL 32 EF 9012</b><small>Pulsar 150 &middot; Oil change</small></div><span class="tag b">Waiting</span></div>
+            </div>
+          </div>
+          <div class="float f1">
+            <span class="ic" style="background:#ECFDF5;color:#059669"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span>
+            <div>UPI payment received<small>&#8377;1,450 &middot; Bill #214</small></div>
+          </div>
+          <div class="float f2">
+            <span class="ic" style="background:#DCFCE7;color:#16A34A"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.2z"/></svg></span>
+            <div>Bill shared on WhatsApp<small>to the customer</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Languages -->
+    <div class="langs">
       <div class="wrap">
-        <h1>Run your two-wheeler workshop<br><span>from your phone</span></h1>
-        <p>GaadiBook is a simple Android app for bike and scooter service workshops in India. Job cards, bills, payments, stock, staff and the daily cashbook in one place, in your own language.</p>
-        <span class="pill">Coming soon on Google Play</span>
+        <p>Works in your language</p>
+        <span class="chip" lang="en">English</span>
+        <span class="chip" lang="hi">हिन्दी</span>
+        <span class="chip" lang="ml">മലയാളം</span>
+        <span class="chip" lang="ta">தமிழ்</span>
+        <span class="chip" lang="te">తెలుగు</span>
+        <span class="chip" lang="kn">ಕನ್ನಡ</span>
+        <span class="chip" lang="mr">मराठी</span>
+        <span class="chip" lang="bn">বাংলা</span>
+        <span class="chip" lang="gu">ગુજરાતી</span>
+        <span class="chip" lang="pa">ਪੰਜਾਬੀ</span>
       </div>
-    </section>
+    </div>
 
-    <section class="wrap">
-      <div class="grid">
-        <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
-          <h3>Job cards in seconds</h3>
-          <p>Scan the number plate, pick complaints with one tap or speak them, and take damage photos at intake.</p>
+    <!-- Features -->
+    <section class="section" id="features">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="kicker">Features</span>
+          <h2>Everything your workshop needs, nothing it doesn't</h2>
+          <p>Built for the workshop floor: big buttons, one-tap choices and voice input, so mechanics spend time on bikes, not on typing.</p>
         </div>
-        <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>
-          <h3>Bills and payments</h3>
-          <p>GST or simple bills, UPI or cash, part payments and old dues. Share the bill on WhatsApp.</p>
-        </div>
-        <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4z"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4"/></svg>
-          <h3>Stock and purchases</h3>
-          <p>Keep spare-parts stock and scan purchase bills to fill the parts list.</p>
-        </div>
-        <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 15c3 0 5 2 5 5"/></svg>
-          <h3>Staff and roles</h3>
-          <p>Add mechanics and helpers. Each role sees only what it needs; wages and advances stay with the owner.</p>
-        </div>
-        <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
-          <h3>Daily cashbook</h3>
-          <p>Today's income and expense at a glance, split by cash and UPI.</p>
-        </div>
-        <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>
-          <h3>10 Indian languages</h3>
-          <p>English, हिन्दी, മലയാളം, தமிழ், తెలుగు, ಕನ್ನಡ, मराठी, বাংলা, ગુજરાતી and ਪੰਜਾਬੀ.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="wrap howto" id="how-it-works">
-      <h2>Sign in with Google, add staff with a QR code</h2>
-      <p>Owners and staff sign in with their own Google account. No passwords or SMS codes to remember. The owner adds staff by showing a live QR code; nobody can join a workshop without the owner's permission.</p>
-      <div class="phones">
-        <div class="step">
-          <div class="phone">
-            <div class="t">Welcome to GaadiBook</div>
-            <div class="gbtn"><b>G</b>Sign in with Google</div>
+        <div class="bento">
+          <div class="feat wide reveal">
+            <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+            <h3>Job cards in seconds</h3>
+            <p>Scan the number plate, pick complaints with one tap or speak them, and take damage photos at intake. Track every bike from arrival to delivery.</p>
+            <div class="mini"><span>Number plate scan</span><span>Voice complaints</span><span>Damage photos</span><span>Job status</span></div>
           </div>
-          <h3>1. Sign in with Google</h3>
-          <p>Tap once and pick your Google account. We receive only your name and email.</p>
-        </div>
-        <div class="step">
-          <div class="phone">
-            <div class="t">Your details</div>
-            <label>Your name</label>
-            <div class="field">Ravi Kumar</div>
-            <label>Mobile number</label>
-            <div class="field">98XXX XXXXX</div>
-            <div class="btn2">Continue</div>
+          <div class="feat reveal">
+            <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></div>
+            <h3>Bills and payments</h3>
+            <p>GST or simple bills, UPI or cash, part payments and old dues. Share the bill on WhatsApp.</p>
           </div>
-          <h3>2. Enter your details once</h3>
-          <p>Your name and a contact number for your workshop. Then create your workshop.</p>
-        </div>
-        <div class="step">
-          <div class="phone">
-            <div class="t">Add staff</div>
-            <svg class="qr" viewBox="0 0 21 21" fill="currentColor" aria-label="QR code"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2zM8 0h2v2H8zM11 1h2v3h-2zM8 3h2v3H8zM9 8h3v2H9zM13 8h2v3h-2zM16 8h3v2h-3zM8 11h2v2H8zM11 12h2v2h-2zM14 12h3v2h-3zM18 11h3v3h-3zM8 15h3v2H8zM12 15h2v3h-2zM15 15h2v2h-2zM18 16h3v2h-3zM8 18h3v3H8zM15 18h2v3h-2zM0 8h2v2H0zM3 9h3v2H3zM0 11h3v2H0z"/></svg>
-            <div class="ok">&#10003; Joined as Mechanic</div>
+          <div class="feat reveal">
+            <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg></div>
+            <h3>Daily cashbook</h3>
+            <p>Today's collection and expense at a glance, split by cash and UPI.</p>
           </div>
-          <h3>3. Staff scan the owner's QR</h3>
-          <p>The QR changes every minute and works once. Far away? Share a code instead, and approve the request.</p>
+          <div class="feat reveal">
+            <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4z"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4"/></svg></div>
+            <h3>Stock and purchases</h3>
+            <p>Keep spare-parts stock and scan purchase bills to fill the parts list.</p>
+          </div>
+          <div class="feat reveal">
+            <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 15c3 0 5 2 5 5"/></svg></div>
+            <h3>Staff and roles</h3>
+            <p>Add mechanics and helpers. Each role sees only what it needs; wages and advances stay with the owner.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="wrap about">
-      <h2>Sign-in and your data</h2>
-      <p>Workshop owners and staff sign in with Google. Each workshop's records are kept separate and are visible only to its own members, and each role sees only what it needs.</p>
-      <p>Read the full <a href="privacy.html">privacy policy and account deletion steps</a> and our <a href="terms.html">terms of service</a>.</p>
+    <!-- How it works -->
+    <section class="section alt" id="how-it-works">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="kicker">How it works</span>
+          <h2>Sign in with Google, add staff with a QR code</h2>
+          <p>No passwords or SMS codes to remember. Nobody can join a workshop without the owner's permission.</p>
+        </div>
+        <div class="steps">
+          <div class="step reveal">
+            <div class="mock" aria-hidden="true">
+              <div class="t">Welcome to GaadiBook</div>
+              <div class="gbtn">
+                <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+                Sign in with Google
+              </div>
+            </div>
+            <span class="num">1</span>
+            <h3>Sign in with Google</h3>
+            <p>Tap once and pick your Google account. We receive only your name and email.</p>
+          </div>
+          <div class="step reveal">
+            <div class="mock" aria-hidden="true">
+              <div class="t">Your details</div>
+              <label>Your name</label>
+              <div class="field">Ravi Kumar</div>
+              <label>Mobile number</label>
+              <div class="field">98XXX XXXXX</div>
+              <div class="mbtn">Continue</div>
+            </div>
+            <span class="num">2</span>
+            <h3>Enter your details once</h3>
+            <p>Your name and a contact number for your workshop. Then create your workshop.</p>
+          </div>
+          <div class="step reveal">
+            <div class="mock" aria-hidden="true">
+              <svg class="qr" viewBox="0 0 21 21" fill="currentColor"><path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2zM8 0h2v2H8zM11 1h2v3h-2zM8 3h2v3H8zM9 8h3v2H9zM13 8h2v3h-2zM16 8h3v2h-3zM8 11h2v2H8zM11 12h2v2h-2zM14 12h3v2h-3zM18 11h3v3h-3zM8 15h3v2H8zM12 15h2v3h-2zM15 15h2v2h-2zM18 16h3v2h-3zM8 18h3v3H8zM15 18h2v3h-2zM0 8h2v2H0zM3 9h3v2H3zM0 11h3v2H0z"/></svg>
+              <div class="ok">&#10003; Joined as Mechanic</div>
+            </div>
+            <span class="num">3</span>
+            <h3>Staff scan the owner's QR</h3>
+            <p>The QR changes every minute and works once. Far away? Share a code instead, and approve the request.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="wrap about" id="contact">
-      <h2>Contact</h2>
-      <p>Email: <a href="mailto:gaadibook.team@gmail.com">gaadibook.team@gmail.com</a></p>
+    <!-- Trust -->
+    <section class="section" id="security">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="kicker">Your data</span>
+          <h2>Your workshop's records stay yours</h2>
+          <p>Each workshop's records are kept separate and are visible only to its own members.</p>
+        </div>
+        <div class="trust">
+          <div class="reveal">
+            <svg class="ic" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+            <h3>Separate for every workshop</h3>
+            <p>Only the members of your workshop can see its records.</p>
+          </div>
+          <div class="reveal">
+            <svg class="ic" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><path d="M17 11l2 2 3-4"/></svg>
+            <h3>Right access for each role</h3>
+            <p>Mechanics and helpers see only what they need. Money and wages stay with the owner.</p>
+          </div>
+          <div class="reveal">
+            <svg class="ic" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a5 5 0 0 1-.6-10A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z"/><path d="M12 12v5M9.5 14.5L12 12l2.5 2.5"/></svg>
+            <h3>Saved to the cloud</h3>
+            <p>Every record is saved online, so a lost or changed phone does not lose your work.</p>
+          </div>
+          <div class="reveal">
+            <svg class="ic" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <h3>Encrypted transfers</h3>
+            <p>All data moves over HTTPS. Read the full <a href="privacy.html">privacy policy</a>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="section alt" id="pricing">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="kicker">Pricing</span>
+          <h2>Simple pricing by workshop size</h2>
+          <p>Every plan has every feature. You pay only for how many people use GaadiBook in your workshop.</p>
+        </div>
+
+        <div class="trial reveal">
+          <div>
+            <b>30-day free trial for every new workshop</b>
+            <p>All features included. No payment details needed to start.</p>
+          </div>
+          <a class="btn btn-dark" href="#faq">How the trial works</a>
+        </div>
+
+        <div class="plans">
+          <div class="plan reveal">
+            <h3>Small</h3><span class="who">For a solo or small workshop</span>
+            <div class="amt">&#8377;299<span> / month</span></div><div class="tax">All taxes included</div>
+            <div class="people"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg>Up to 5 people</div>
+          </div>
+          <div class="plan reveal">
+            <h3>Standard</h3><span class="who">For a growing workshop</span>
+            <div class="amt">&#8377;399<span> / month</span></div><div class="tax">All taxes included</div>
+            <div class="people"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg>6 to 10 people</div>
+          </div>
+          <div class="plan reveal">
+            <h3>Large</h3><span class="who">For a busy service centre</span>
+            <div class="amt">&#8377;599<span> / month</span></div><div class="tax">All taxes included</div>
+            <div class="people"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg>11 to 30 people</div>
+          </div>
+          <div class="plan reveal">
+            <h3>Extra Large</h3><span class="who">For a large service centre</span>
+            <div class="amt">&#8377;999<span> / month</span></div><div class="tax">All taxes included</div>
+            <div class="people"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg>31 to 100 people</div>
+          </div>
+        </div>
+
+        <div class="included reveal">
+          <h3>Included in every plan</h3>
+          <ul class="checks">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Unlimited job cards and bills</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>GST and simple bills</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>UPI and cash payments, old dues</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Bill sharing on WhatsApp</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Stock and purchase bills</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Staff, roles, wages and advances</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Daily cashbook</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>All 10 languages</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Email support</li>
+          </ul>
+        </div>
+
+        <p class="fine">Plans are paid inside the app through Google Play and renew every month until cancelled. Cancel anytime from Google Play. See our <a href="refund.html">refund and cancellation policy</a>. More than 100 people? <a href="#contact">Contact us</a> for a custom price.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="kicker">FAQ</span>
+          <h2>Questions, answered</h2>
+        </div>
+        <div class="faq reveal">
+          <details>
+            <summary>How does the free trial work?<span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+            <div class="ans">Every new workshop gets 30 days with all features, free. You don't need to give any payment details to start. Before the trial ends, the app shows the plan for your workshop size and you can choose to pay.</div>
+          </details>
+          <details>
+            <summary>How do I pay, and which payment methods work?<span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+            <div class="ans">You pay inside the app through Google Play. You can use any method your Google Play account supports, such as UPI, cards or Google Play balance. Google Play sends the receipt to your email.</div>
+          </details>
+          <details>
+            <summary>How do I cancel? Can I get a refund?<span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+            <div class="ans">Cancel anytime in the Google Play Store app under Payments &amp; subscriptions &rarr; Subscriptions. There is no cancellation fee, and your plan keeps working until the end of the month you have paid for. For wrong or double charges, write to us within 7 days for a full refund. Read the full <a href="refund.html">refund and cancellation policy</a>.</div>
+          </details>
+          <details>
+            <summary>How is the plan chosen for my workshop?<span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+            <div class="ans">By the number of people in your workshop, counting the owner and all staff. Up to 5 people is Small, 6 to 10 is Standard, 11 to 30 is Large and 31 to 100 is Extra Large.</div>
+          </details>
+          <details>
+            <summary>Does it need internet?<span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+            <div class="ans">Yes, to save. Every job card and bill is saved online so all phones in your workshop see the same records. A copy stays on your phone so you can look up old records quickly, even when the network is slow.</div>
+          </details>
+          <details>
+            <summary>What happens to my records if I stop paying?<span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+            <div class="ans">Your saved job cards, bills and other records are not deleted when a plan ends. You can also ask us to delete your account and data; the steps are in the <a href="privacy.html#delete-account">privacy policy</a>.</div>
+          </details>
+          <details>
+            <summary>Which phones does it work on?<span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+            <div class="ans">GaadiBook is an Android app, available on Google Play. Owners and staff each use their own phone and sign in with their own Google account.</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact" style="padding-top: 0;">
+      <div class="wrap">
+        <div class="cta-band reveal">
+          <div>
+            <h2>Questions before you start?</h2>
+            <p>We're happy to help with setup, plans and billing. Write to us and we'll reply within 2 working days.</p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="mailto:gaadibook.team@gmail.com">Email support</a>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="row">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6"/></svg>
+              <div><small>Run by</small><span>Seethalekshmi A (SITALABS), an individual business in India</span></div>
+            </div>
+            <div class="row">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+              <div><small>Address</small><span>Vellooparampil, Karuvatta PO, Alappuzha, Kerala 690517, India</span></div>
+            </div>
+            <div class="row">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+              <div><small>Billing and business</small><a href="mailto:contact.sitalabs@gmail.com">contact.sitalabs@gmail.com</a></div>
+            </div>
+            <div class="row">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5v.01"/></svg>
+              <div><small>App support</small><a href="mailto:gaadibook.team@gmail.com">gaadibook.team@gmail.com</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer>
     <div class="wrap">
-      <span>&copy; 2026 GaadiBook</span>
-      <span><a href="privacy.html">Privacy policy &amp; account deletion</a> &middot; <a href="terms.html">Terms of service</a></span>
+      <div class="foot">
+        <div>
+          <a class="brand" href="./"><span class="logo">GB</span>GaadiBook</a>
+          <p>The simple workshop app for two-wheeler service centres in India. Job cards, bills, stock, staff and cashbook in your own language.</p>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How it works</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="privacy.html">Privacy policy &amp; account deletion</a></li>
+            <li><a href="terms.html">Terms of service</a></li>
+            <li><a href="refund.html">Refund &amp; cancellation</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copy">
+        <span>&copy; 2026 GaadiBook &middot; Seethalekshmi A (SITALABS)</span>
+        <span>Made in Kerala, India</span>
+      </div>
     </div>
   </footer>
+
+  <script>
+    (function () {
+      document.body.classList.remove('no-js');
+      var header = document.getElementById('top');
+      var onScroll = function () { header.classList.toggle('scrolled', window.scrollY > 8); };
+      window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+      var btn = document.getElementById('menuBtn'), nav = document.getElementById('nav');
+      var setOpen = function (open) { nav.classList.toggle('open', open); btn.setAttribute('aria-expanded', open); btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
+      btn.addEventListener('click', function () { setOpen(!nav.classList.contains('open')); });
+      nav.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+
+      var items = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) { items.forEach(function (el) { el.classList.add('in'); }); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      items.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
 </body>
 </html>

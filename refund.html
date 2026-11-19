@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GaadiBook — Refund and Cancellation</title>
+  <style>
+    :root {
+      --primary: #FA5A1E;
+      --primary-dark: #DD450D;
+      --navy: #0F172A;
+      --slate: #64748B;
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --border: #E2E8F0;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--navy);
+      line-height: 1.6;
+      padding: 32px 16px;
+    }
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 40px 32px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+      border: 1px solid var(--border);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 18px;
+      color: white;
+      font-size: 28px;
+      font-weight: 900;
+      box-shadow: 0 8px 16px rgba(250, 90, 30, 0.25);
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--navy);
+      margin: 28px 0 12px 0;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #F1F5F9;
+    }
+    p, li {
+      font-size: 14.5px;
+      color: #334155;
+      margin-bottom: 12px;
+    }
+    ul {
+      padding-left: 24px;
+      margin-bottom: 16px;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #EFF6FF;
+      color: #2563EB;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+    .deletion-box {
+      background: #FFF7ED;
+      border: 1.5px solid #FFEDD5;
+      border-radius: 16px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    .deletion-box h3 {
+      font-size: 17px;
+      color: #C2410C;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn {
+      display: inline-block;
+      background: var(--navy);
+      color: white;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 12px;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #1E293B;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 36px;
+      font-size: 12.5px;
+      color: var(--slate);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div class="logo-badge">GB</div>
+      <h1>GaadiBook — Refund and Cancellation Policy</h1>
+      <span class="badge">Last updated: 19 November 2026</span>
+    </div>
+
+    <section>
+      <p>
+        This policy applies to paid GaadiBook plans bought in the GaadiBook Android app. All payments are processed by
+        Google Play. Please also read our <a href="terms.html">Terms of Service</a>.
+      </p>
+
+      <h2>1. Free trial</h2>
+      <p>
+        Every new workshop gets a 30-day free trial with all features. Nothing is charged during the trial, and no
+        payment details are needed to start it.
+      </p>
+
+      <h2>2. Plans and billing</h2>
+      <ul>
+        <li>Plans are monthly: Small &#8377;299, Standard &#8377;399, Large &#8377;599, Extra Large &#8377;999 a month (all taxes included).</li>
+        <li>Payment is taken by Google Play when you buy, and again on the same date every month until you cancel.</li>
+        <li>Google Play sends a receipt to the email address of your Google account.</li>
+      </ul>
+
+      <h2>3. How to cancel</h2>
+      <ul>
+        <li>Open the <strong>Google Play Store</strong> app, tap your profile picture, then <strong>Payments &amp; subscriptions</strong> &rarr; <strong>Subscriptions</strong>.</li>
+        <li>Choose <strong>GaadiBook</strong> and tap <strong>Cancel subscription</strong>.</li>
+        <li>You can cancel anytime. No cancellation fee is charged.</li>
+        <li>After cancelling, your plan keeps working until the end of the month you have already paid for. It is not renewed after that.</li>
+        <li>Deleting the app does not cancel the plan. Please cancel in Google Play.</li>
+      </ul>
+
+      <h2>4. Refunds</h2>
+      <ul>
+        <li>If you were charged by mistake, charged twice, or the paid plan did not start in the app, write to us within 7 days of the payment at <strong>gaadibook.team@gmail.com</strong> with the Google Play order number (it starts with GPA.). We will check and refund the full amount for that payment.</li>
+        <li>You can also ask Google directly within 48 hours of a payment from Google Play: <a href="https://support.google.com/googleplay/answer/2479637" rel="noopener">Google Play refund help</a>.</li>
+        <li>Refunds go back to the same payment method used in Google Play. Google usually completes them within 5 to 10 working days, depending on your bank or UPI app.</li>
+        <li>Apart from the cases above, a month already paid for is not refunded for the unused days, but you can cancel so you are not charged again.</li>
+      </ul>
+
+      <h2>5. Your records</h2>
+      <p>
+        Your saved job cards, bills and other records are not deleted when a plan is cancelled, refunded or ends.
+      </p>
+
+      <h2>6. Contact</h2>
+      <p>
+        For billing questions, cancellation help or refund requests: <strong>contact.sitalabs@gmail.com</strong>
+        or <strong>gaadibook.team@gmail.com</strong>. GaadiBook is run by Seethalekshmi A (SITALABS), Vellooparampil, Karuvatta PO, Alappuzha, Kerala 690517, India.
+        We reply within 2 working days.
+      </p>
+    </section>
+
+    <div class="footer">
+      <p>&copy; 2026 GaadiBook. All rights reserved. &middot; <a href="privacy.html">Privacy Policy</a> &middot; <a href="terms.html">Terms of Service</a></p>
+    </div>
+  </div>
+
+</body>
+</html>
