@@ -63,6 +63,8 @@
     .bar { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
     .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; color: var(--navy); letter-spacing: -.3px; }
     .brand:hover { text-decoration: none; }
+    .wordmark { font-weight: 700; letter-spacing: -.6px; color: var(--navy); }
+    .wordmark span { color: var(--brand); }
     .logo {
       width: 36px; height: 36px; border-radius: 10px; flex: none; display: block;
       box-shadow: 0 6px 14px -4px rgba(250, 90, 30, .55);
@@ -314,7 +316,7 @@
 
   <header class="top" id="top">
     <div class="wrap bar">
-      <a class="brand" href="./" aria-label="GaadiBook home"><img class="logo" src="img/logo-128.png" alt="" width="36" height="36">GaadiBook</a>
+      <a class="brand" href="./" aria-label="GaadiBook home"><img class="logo" src="img/logo-128.png" alt="" width="36" height="36"><span class="wordmark">Gaadi<span>Book</span></span></a>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
@@ -655,7 +657,7 @@
     <div class="wrap">
       <div class="foot">
         <div>
-          <a class="brand" href="./"><img class="logo" src="img/logo-128.png" alt="" width="36" height="36">GaadiBook</a>
+          <a class="brand" href="./"><img class="logo" src="img/logo-128.png" alt="" width="36" height="36"><span class="wordmark">Gaadi<span>Book</span></span></a>
           <p>The simple workshop app for two-wheeler service centres in India. Job cards, bills, stock, staff and cashbook in your own language.</p>
         </div>
         <div>
